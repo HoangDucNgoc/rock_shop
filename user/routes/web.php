@@ -11,6 +11,11 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+/*
+*  middleware set just proxy and check json data request
+*/
+$router->group(['middleware' => ['proxy','json']], function () use ($router) {
+
+   $router->post('/user/register', 'UserController@register'); 
+	   
 });

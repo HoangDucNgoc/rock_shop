@@ -15,3 +15,4 @@
 	- lumen laravel 5.5
 	
 # Install
+	- filter ip via apache

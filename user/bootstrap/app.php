@@ -28,6 +28,8 @@ Register config
  */
 
 $app->configure('trustedproxy');
+$app->configure('app');
+
 
 $app->withFacades();
 
@@ -69,9 +71,9 @@ $app->singleton(
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
 
 $app->routeMiddleware([
     'proxy' => App\Http\Middleware\TrustProxies::class,

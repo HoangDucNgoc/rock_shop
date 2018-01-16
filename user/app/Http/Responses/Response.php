@@ -19,16 +19,14 @@ class Response
     /**
      * single
      */
-    protected $data;
-    protected $message;
-    protected $status;
-    protected $errorMessage; // array
+    public $data;
+    public $message;
+    public $errorMessage; // array
 
     public function responseData()
     {
         $dataResponse = [
             'message' => $this->message,
-            'status'  => $this->status,
             'data'    => $this->data,
         ];
 
@@ -39,7 +37,6 @@ class Response
     {
         $dataResponse = [
             'message' => $this->message,
-            'status'  => $this->status,
             'data'    => $this->datas,
         ];
 
@@ -50,7 +47,6 @@ class Response
     {
         $dataResponse = [
             'message' => $this->message,
-            'status'  => $this->status,
             'data'    => $this->errorMessage,
         ];
         return response()->json($dataResponse, ErrorCode::BAD_REQUEST);

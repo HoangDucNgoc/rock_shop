@@ -3,6 +3,7 @@
 namespace App\Http\Middleware;
 
 use App\Http\Responses\Response;
+use App\Helpers\CommonHelper;
 use Closure;
 
 class JsonMiddleware
@@ -29,6 +30,8 @@ class JsonMiddleware
         } else {
             return $response->formatInvalid();
         }
+
+        CommonHelper::logRequest($request);
 
         return $next($request);
     }

@@ -10,16 +10,17 @@ class UserRepository extends BaseRepository
     /**
      * insert new user to database
      *
-     * @param  App\Models\User $user 
-     * @return int 
+     * @param  App\Models\User $user
+     * @return int
      */
-    public function newUser($user){
+    public function newUser($user)
+    {
         return DB::table('users')->insertGetId(
-                                    [
-                                        'email' => $user->email,
-                                        'password' => $user->password
-                                    ]
-                                );
+            [
+                'email'    => $user->email,
+                'password' => $user->password,
+            ]
+        );
     }
-    
+
 }

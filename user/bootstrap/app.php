@@ -30,7 +30,7 @@ Register config
 $app->configure('trustedproxy');
 $app->configure('app');
 
-
+// accept use class facades
 $app->withFacades();
 
 $app->withEloquent();
@@ -94,6 +94,18 @@ $app->routeMiddleware([
 // $app->register(App\Providers\AppServiceProvider::class);
 $app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
+
+/*
+|--------------------------------------------------------------------------
+| Custom Monolog Configuration
+|--------------------------------------------------------------------------
+*/
+/*$app->configureMonologUsing(function($monolog) {
+    $monolog->pushHandler(new Monolog\Handler\StreamHandler(__DIR__ . '/../storage/logs/app.log') );
+
+    return $monolog;
+})*/;
+
 
 /*
 |--------------------------------------------------------------------------

@@ -8,7 +8,6 @@ abstract class ErrorCode
     const UNAUTHORIZED = 401;
     const FORBIDDEN    = 403;
 
-
     const DATA_INVALID = "Data invalid";
 
 }

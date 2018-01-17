@@ -3,6 +3,7 @@
 namespace App\Http\Responses;
 
 use App\Enums\ErrorCode;
+use Log;
 
 class Response
 {
@@ -49,13 +50,16 @@ class Response
             'message' => $this->message,
             'data'    => $this->errorMessage,
         ];
+
+        Log::error(json_encode($this->errorMessage, JSON_UNESCAPED_UNICODE));
+
         return response()->json($dataResponse, ErrorCode::BAD_REQUEST);
     }
 
     public function formatInvalid()
     {
         $dataResponse = [
-            'message' => "Data request invalid"
+            'message' => "Data request invalid",
         ];
         return response()->json($dataResponse, ErrorCode::BAD_REQUEST);
     }

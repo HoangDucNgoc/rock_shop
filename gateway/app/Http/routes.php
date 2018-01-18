@@ -21,6 +21,6 @@ $router->get('foo', function () {
 });
 
 $router->group(['middleware' => 'throttle'], function () use ($router) {
- 	$router->get('/demo', 'ExampleController@demo');
+ 	$router->post('/user/register', 'UserController@register');
 
 });

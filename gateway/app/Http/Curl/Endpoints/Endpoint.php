@@ -8,6 +8,14 @@ use App\Contracts\Http\Curl\Endpoint as EndpointContract;
 
 abstract class Endpoint implements EndpointContract
 {
+
+    /**
+     * status request.
+     *
+     * @var bool
+     */
+    protected $async;
+
     /**
      * The endpoint URI.
      *
@@ -48,6 +56,16 @@ abstract class Endpoint implements EndpointContract
         $this->service = $service;
 
         $this->options = $options;
+    }
+
+    /**
+     * Get the status request.
+     *
+     * @return bool
+     */
+    public function getAsync()
+    {
+        return $this->async;
     }
 
     /**

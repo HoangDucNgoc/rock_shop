@@ -11,15 +11,6 @@
 |
 */
 
-
-
-
-
-
-$router->get('foo', function () {
-    return 'Hello World';
-});
-
 $router->group(['middleware' => 'throttle'], function () use ($router) {
  	$router->post('/user/register', 'UserController@register');
 

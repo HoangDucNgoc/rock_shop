@@ -17,4 +17,5 @@ interface Service
      * @return string
      */
     public function name();
+
 }

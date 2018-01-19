@@ -24,4 +24,11 @@ interface Endpoint
      * @return array
      */
     public function getOptions();
+
+    /**
+     * Get the status request.
+     *
+     * @return bool
+     */
+    public function getAsync();
 }

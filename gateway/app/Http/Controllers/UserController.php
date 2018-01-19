@@ -20,7 +20,8 @@ class UserController extends Controller
     public function register(Request $request)
     {
         $result = UserMicroservice::register(['json' => (array) json_decode($request->getContent())]);
-        var_dump($result->getBody());
+        
+        //var_dump($result->getBody());
     }
 
     //

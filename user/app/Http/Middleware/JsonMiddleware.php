@@ -30,8 +30,8 @@ class JsonMiddleware
         } else {
             return $response->formatInvalid();
         }
-
-        CommonHelper::logRequest($request);
+        // uncomment if you want log request
+        //CommonHelper::logRequest($request);
 
         return $next($request);
     }

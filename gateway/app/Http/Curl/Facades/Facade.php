@@ -7,6 +7,7 @@ use App\Contracts\Http\Curl\HttpClient as HttpClientContract;
 
 abstract class Facade
 {
+
     /**
      * The service class name.
      *
@@ -31,6 +32,7 @@ abstract class Facade
     {
         static::$httpClient = $httpClient;
     }
+
 
     /**
      * Get the service instance.
@@ -88,12 +90,17 @@ abstract class Facade
      */
     public function __call($method, array $parameters)
     {
+
         if (! static::$httpClient instanceof HttpClientContract) {
             throw new RuntimeException('httpClient is not an instance of '.HttpClientContract::class.'.');
         }
 
         $endpoint = $this->getEndpoint($method, $parameters);
-
+        // async
+        if($endpoint->getAsync()){
+            return static::$httpClient->callAsync($endpoint);
+        }
+        // else 
         return static::$httpClient->call($endpoint);
     }
 

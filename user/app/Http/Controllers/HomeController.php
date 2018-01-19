@@ -15,10 +15,4 @@ class HomeController extends Controller
     {
         //
     }
-
-    public function demo(Request $request)
-    {
-        var_dump(config('trustedproxy.proxies'));
-    }
-
 }

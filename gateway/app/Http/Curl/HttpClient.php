@@ -9,6 +9,8 @@ use App\Exceptions\CircuitBreakerException;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientContract;
 use Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface;
 use App\Contracts\Http\Curl\HttpClient as HttpClientContract;
+use GuzzleHttp\Exception\RequestException;
+use App\Helpers\CommonHelper;
 
 class HttpClient implements HttpClientContract
 {
@@ -54,12 +56,20 @@ class HttpClient implements HttpClientContract
         $this->checkEndpoint($endpoint);
 
         $method = $wait ? 'request' : 'requestAsync';
+        try {
+            $result = $this->getClient()->{$method}(
+                $endpoint->getMethod(), $endpoint->getUri(), $this->options($endpoint->getOptions())
+            );
+            return $wait ? new Response($result) : $result;
+        } catch (RequestException $e) {
+            $url = $endpoint->getUri();
+            $method = $endpoint->getMethod();
+            $option = json_encode($endpoint->getOptions());
+            $message = $e->getMessage() . "\n {$method}@{$url} [{$option}]";
+            CommonHelper::logError($message);
+            return ;
+        }
 
-        $result = $this->getClient()->{$method}(
-            $endpoint->getMethod(), $endpoint->getUri(), $this->options($endpoint->getOptions())
-        );
-
-        return $wait ? new Response($result) : $result;
     }
 
     /**

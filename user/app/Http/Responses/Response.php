@@ -43,7 +43,7 @@ class Response
 
         return response()->json($dataResponse, ErrorCode::OK);
     }
-
+    
     public function badRequest()
     {
         $dataResponse = [

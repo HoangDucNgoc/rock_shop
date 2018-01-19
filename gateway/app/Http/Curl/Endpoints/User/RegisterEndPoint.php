@@ -20,4 +20,12 @@ class RegisterEndpoint extends Endpoint
      * @var string
      */
     protected $method = 'POST';
+
+    /**
+     * status request.
+     * wait response  : true 
+     * async          : false
+     * @var bool
+     */
+    protected $async = false;
 }

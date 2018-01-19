@@ -2,15 +2,15 @@
 
 namespace App\Http\Curl;
 
-use Exception;
-use GuzzleHttp\RequestOptions;
 use App\Contracts\Http\Curl\Endpoint;
-use App\Exceptions\CircuitBreakerException;
-use GuzzleHttp\ClientInterface as GuzzleHttpClientContract;
-use Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface;
 use App\Contracts\Http\Curl\HttpClient as HttpClientContract;
-use GuzzleHttp\Exception\RequestException;
+use App\Exceptions\CircuitBreakerException;
 use App\Helpers\CommonHelper;
+use Exception;
+use GuzzleHttp\ClientInterface as GuzzleHttpClientContract;
+use GuzzleHttp\Exception\RequestException;
+use GuzzleHttp\RequestOptions;
+use Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface;
 
 class HttpClient implements HttpClientContract
 {
@@ -62,12 +62,12 @@ class HttpClient implements HttpClientContract
             );
             return $wait ? new Response($result) : $result;
         } catch (RequestException $e) {
-            $url = $endpoint->getUri();
-            $method = $endpoint->getMethod();
-            $option = json_encode($endpoint->getOptions());
+            $url     = $endpoint->getUri();
+            $method  = $endpoint->getMethod();
+            $option  = json_encode($endpoint->getOptions());
             $message = $e->getMessage() . "\n {$method}@{$url} [{$option}]";
             CommonHelper::logError($message);
-            return ;
+            return;
         }
 
     }
@@ -122,8 +122,8 @@ class HttpClient implements HttpClientContract
     {
         $defaults = [
             RequestOptions::CONNECT_TIMEOUT => env('CONNECT_TIMEOUT', 3),
-            RequestOptions::HTTP_ERRORS => false,
-            RequestOptions::TIMEOUT => env('TIMEOUT', 5),
+            RequestOptions::HTTP_ERRORS     => false,
+            RequestOptions::TIMEOUT         => env('TIMEOUT', 5),
         ];
 
         return array_merge($defaults, $options);

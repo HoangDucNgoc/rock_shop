@@ -2,8 +2,8 @@
 
 namespace App\Http\Curl\Facades;
 
-use RuntimeException;
 use App\Contracts\Http\Curl\HttpClient as HttpClientContract;
+use RuntimeException;
 
 abstract class Facade
 {
@@ -33,7 +33,6 @@ abstract class Facade
         static::$httpClient = $httpClient;
     }
 
-
     /**
      * Get the service instance.
      *
@@ -41,7 +40,7 @@ abstract class Facade
      */
     protected function getService()
     {
-        $service = 'App\Http\Curl\Services\\'.$this->getServiceClassName().'Service';
+        $service = 'App\Http\Curl\Services\\' . $this->getServiceClassName() . 'Service';
 
         return new $service;
     }
@@ -78,7 +77,7 @@ abstract class Facade
      */
     protected function getEndpointClassName($class)
     {
-        return 'App\Http\Curl\Endpoints\\'.$this->getServiceClassName().'\\'.studly_case($class).'Endpoint';
+        return 'App\Http\Curl\Endpoints\\' . $this->getServiceClassName() . '\\' . studly_case($class) . 'Endpoint';
     }
 
     /**
@@ -91,16 +90,16 @@ abstract class Facade
     public function __call($method, array $parameters)
     {
 
-        if (! static::$httpClient instanceof HttpClientContract) {
-            throw new RuntimeException('httpClient is not an instance of '.HttpClientContract::class.'.');
+        if (!static::$httpClient instanceof HttpClientContract) {
+            throw new RuntimeException('httpClient is not an instance of ' . HttpClientContract::class . '.');
         }
 
         $endpoint = $this->getEndpoint($method, $parameters);
         // async
-        if($endpoint->getAsync()){
+        if ($endpoint->getAsync()) {
             return static::$httpClient->callAsync($endpoint);
         }
-        // else 
+        // else
         return static::$httpClient->call($endpoint);
     }
 
@@ -114,6 +113,6 @@ abstract class Facade
     public static function __callStatic($method, array $parameters)
     {
 
-        return call_user_func_array([new static, $method], $parameters);
+        return call_user_func_array([new static , $method], $parameters);
     }
 }

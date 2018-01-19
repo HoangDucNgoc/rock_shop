@@ -17,11 +17,21 @@ class UserController extends Controller
         //
     }
 
+    /*
+    |--------------------------------------------------------------------------
+    | Register for normal user
+    |--------------------------------------------------------------------------
+    |    email       | string (250)       | required
+    |    password    | string             | required
+     */
     public function register(Request $request)
     {
         $result = UserMicroservice::register(['json' => (array) json_decode($request->getContent())]);
-        var_dump($result->getBody());
-        echo 'ok';
+
+        if ($result) {
+            return response()->json($result->getBody(), $result->getStatusCode());
+        }
+        return response()->json("Error Server", 500);
     }
 
     //

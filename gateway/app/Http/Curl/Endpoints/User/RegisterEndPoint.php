@@ -23,7 +23,7 @@ class RegisterEndpoint extends Endpoint
 
     /**
      * status request.
-     * wait response  : true 
+     * wait response  : true
      * async          : false
      * @var bool
      */

@@ -1,3 +1,15 @@
+# Description 
+	- Service gateway wrote follow  Lumen Microservice Skeleton
+		- [About]
+		- [Installation]
+		- [Configuration]
+		- [Features]
+		    - [Calling other microservices]
+		    - [Circuit Breaker]
+		    - [Requests Limiter]
+	- facade.php new class : objectservice and objectendpoint 
+	- Each service can log request, response , and error
+
 # Document 
 
 # Technology
@@ -5,3 +17,12 @@
 	- lumen laravel 5.5
 	
 # Install
+	- filter ip via apache
+# Config
+	- soure : https://github.com/HoangDucNgoc/rock_shop
+	- composer update 
+	- copy .env.example --> .env 
+		- config ip service
+# how to run
+   	- create NameService : name , uri  
+   	- create NameEndPoint : url api, method , async

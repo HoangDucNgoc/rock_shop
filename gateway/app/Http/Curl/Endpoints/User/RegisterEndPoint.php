@@ -28,4 +28,10 @@ class RegisterEndpoint extends Endpoint
      * @var bool
      */
     protected $async = false;
+
+    /**
+     * The endpoint token
+     * @var bool
+     */
+    protected $token = false;
 }

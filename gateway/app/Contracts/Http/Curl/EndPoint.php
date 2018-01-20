@@ -31,4 +31,11 @@ interface Endpoint
      * @return bool
      */
     public function getAsync();
+
+    /**
+     * Get the token.
+     *
+     * @return bool
+     */
+    public function getToken();
 }

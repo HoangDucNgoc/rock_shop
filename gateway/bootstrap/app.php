@@ -1,9 +1,9 @@
 <?php
 
-require_once __DIR__.'/../vendor/autoload.php';
+require_once __DIR__ . '/../vendor/autoload.php';
 
 try {
-    (new Dotenv\Dotenv(__DIR__.'/../'))->load();
+    (new Dotenv\Dotenv(__DIR__ . '/../'))->load();
 } catch (Dotenv\Exception\InvalidPathException $e) {
     //
 }
@@ -17,10 +17,10 @@ try {
 | that serves as the central piece of this framework. We'll use this
 | application as an "IoC" container and router for this framework.
 |
-*/
+ */
 
 $app = new Laravel\Lumen\Application(
-    realpath(__DIR__.'/../')
+    realpath(__DIR__ . '/../')
 );
 
 $app->withFacades();
@@ -36,12 +36,11 @@ $app->withEloquent();
 | register the exception handler and the console kernel. You may add
 | your own bindings here if you like or you can make another file.
 |
-*/
+ */
 
 $app->routeMiddleware([
     'throttle' => App\Http\Middleware\ThrottleRequests::class,
 ]);
-
 
 $app->singleton(
     Illuminate\Contracts\Debug\ExceptionHandler::class,
@@ -62,15 +61,15 @@ $app->singleton(
 | be global middleware that run before and after each request into a
 | route or middleware that'll be assigned to some specific routes.
 |
-*/
+ */
 
 // $app->middleware([
 //    App\Http\Middleware\ExampleMiddleware::class
 // ]);
 
-// $app->routeMiddleware([
-//     'auth' => App\Http\Middleware\Authenticate::class,
-// ]);
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
 
 /*
 |--------------------------------------------------------------------------
@@ -81,10 +80,10 @@ $app->singleton(
 | are used to bind services into the container. Service providers are
 | totally optional, so you are not required to uncomment this line.
 |
-*/
+ */
 
 // $app->register(App\Providers\AppServiceProvider::class);
-// $app->register(App\Providers\AuthServiceProvider::class);
+$app->register(App\Providers\AuthServiceProvider::class);
 // $app->register(App\Providers\EventServiceProvider::class);
 
 $app->register(Rymanalu\LaravelCircuitBreaker\CircuitBreakerServiceProvider::class);
@@ -103,12 +102,12 @@ $app->register(App\Providers\EventServiceProvider::class);
 | the application. This will provide all of the URLs the application
 | can respond to, as well as the controllers that may handle them.
 |
-*/
+ */
 
 $app->router->group([
     'namespace' => 'App\Http\Controllers',
 ], function ($router) {
-   require __DIR__.'/../app/Http/routes.php';
+    require __DIR__ . '/../app/Http/routes.php';
 });
 
 return $app;

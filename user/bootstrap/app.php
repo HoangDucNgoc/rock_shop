@@ -78,6 +78,7 @@ $app->routeMiddleware([
 $app->routeMiddleware([
     'proxy' => App\Http\Middleware\TrustProxies::class,
     'json'  => App\Http\Middleware\JsonMiddleware::class,
+    'token' => App\Http\Middleware\CheckTokenMiddleware::class,
 ]);
 
 /*
@@ -99,13 +100,12 @@ $app->register(App\Providers\AuthServiceProvider::class);
 |--------------------------------------------------------------------------
 | Custom Monolog Configuration
 |--------------------------------------------------------------------------
-*/
+ */
 /*$app->configureMonologUsing(function($monolog) {
-    $monolog->pushHandler(new Monolog\Handler\StreamHandler(__DIR__ . '/../storage/logs/app.log') );
+$monolog->pushHandler(new Monolog\Handler\StreamHandler(__DIR__ . '/../storage/logs/app.log') );
 
-    return $monolog;
+return $monolog;
 })*/;
-
 
 /*
 |--------------------------------------------------------------------------

@@ -26,6 +26,8 @@ class UserController extends Controller
      */
     public function register(Request $request)
     {
+        //var_dump($request->user());
+
         $result = UserMicroservice::register(['json' => (array) json_decode($request->getContent())]);
 
         if ($result) {

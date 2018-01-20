@@ -2,7 +2,10 @@
 
 namespace App\Http\Requests\User;
 
+use App\Enums\Status;
 use App\Models\User;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Lang;
 use Validator;
 
@@ -53,7 +56,11 @@ class RegisterRequest
     public function getData()
     {
         $this->user->email    = $this->request->input('email');
-        $this->user->password = $this->request->input('password');
+        $this->user->userName = $this->request->input('email');
+        $this->user->password = Hash::make($this->request->input('password'));
+        $this->user->isActive = Status::ACTIVE;
+        $this->user->isDelete = Status::UNDELETE;
+        $this->user->token    = base64_encode(Carbon::now() . '_' . env('PRIVATE_KEY_TOKEN'));
         return $this->user;
     }
 

@@ -6,6 +6,7 @@ use App\Contracts\Http\Curl\Endpoint;
 use App\Contracts\Http\Curl\HttpClient as HttpClientContract;
 use App\Exceptions\CircuitBreakerException;
 use App\Helpers\CommonHelper;
+use Carbon\Carbon;
 use Exception;
 use GuzzleHttp\ClientInterface as GuzzleHttpClientContract;
 use GuzzleHttp\Exception\RequestException;
@@ -14,6 +15,7 @@ use Rymanalu\LaravelCircuitBreaker\CircuitBreakerInterface;
 
 class HttpClient implements HttpClientContract
 {
+
     /**
      * The Guzzle HTTP Client implementation.
      *
@@ -40,6 +42,7 @@ class HttpClient implements HttpClientContract
         $this->httpClient = $httpClient;
 
         $this->circuitBreaker = $circuitBreaker;
+
     }
 
     /**
@@ -58,7 +61,7 @@ class HttpClient implements HttpClientContract
         $method = $wait ? 'request' : 'requestAsync';
         try {
             $result = $this->getClient()->{$method}(
-                $endpoint->getMethod(), $endpoint->getUri(), $this->options($endpoint->getOptions())
+                $endpoint->getMethod(), $endpoint->getUri(), $this->options($endpoint)
             );
             return $wait ? new Response($result) : $result;
         } catch (RequestException $e) {
@@ -118,13 +121,24 @@ class HttpClient implements HttpClientContract
      * @param  array  $options
      * @return array
      */
-    protected function options(array $options = [])
+    protected function options(Endpoint $endpoint)
     {
+        $options  = $endpoint->getOptions();
         $defaults = [
             RequestOptions::CONNECT_TIMEOUT => env('CONNECT_TIMEOUT', 3),
             RequestOptions::HTTP_ERRORS     => false,
             RequestOptions::TIMEOUT         => env('TIMEOUT', 5),
         ];
+
+        $appToken = Carbon::today()->toDateTimeString() . '_' . env('PRIVATE_REQUEST_KEY', 'TOKEN_INVALID');
+
+        $header = [
+            'headers' => [
+                'APP_TOKEN' => base64_encode($appToken),
+            ],
+        ];
+
+        $defaults = array_merge($defaults, $header);
 
         return array_merge($defaults, $options);
     }

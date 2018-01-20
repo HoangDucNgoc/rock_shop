@@ -31,7 +31,6 @@ class UserController extends Controller
         }
 
         $user = $registerRequest->getData();
-        $user->setDefaultValue();
 
         $result = $userRepository->newUser($user);
 

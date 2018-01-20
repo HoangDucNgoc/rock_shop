@@ -23,6 +23,8 @@
 	- composer update 
 	- copy .env.example --> .env 
 		- config ip service
+		- config PRIVATE_GATEWAY_KEY
+		- config PRIVATE_REQUEST_KEY (value must same PRIVATE_GATEWAY_KEY)
 # how to run
    	- create NameService : name , uri  
    	- create NameEndPoint : url api, method , async

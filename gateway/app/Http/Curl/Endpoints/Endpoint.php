@@ -2,12 +2,18 @@
 
 namespace App\Http\Curl\Endpoints;
 
-use GuzzleHttp\Psr7\Request;
-use App\Contracts\Http\Curl\Service;
 use App\Contracts\Http\Curl\Endpoint as EndpointContract;
+use App\Contracts\Http\Curl\Service;
+use GuzzleHttp\Psr7\Request;
 
 abstract class Endpoint implements EndpointContract
 {
+
+    /**
+     * The endpoint token
+     * @var bool
+     */
+    protected $token;
 
     /**
      * status request.
@@ -51,11 +57,13 @@ abstract class Endpoint implements EndpointContract
      * @param  array  $options
      * @return void
      */
+
     public function __construct(Service $service, array $options = [])
     {
         $this->service = $service;
 
         $this->options = $options;
+
     }
 
     /**
@@ -68,6 +76,11 @@ abstract class Endpoint implements EndpointContract
         return $this->async;
     }
 
+    public function getToken()
+    {
+        return $this->token;
+    }
+
     /**
      * Get the endpoint URI.
      *
@@ -75,7 +88,7 @@ abstract class Endpoint implements EndpointContract
      */
     public function getUri()
     {
-        return $this->normalize($this->service->uri()).'/'.$this->normalize($this->uri ?: '');
+        return $this->normalize($this->service->uri()) . '/' . $this->normalize($this->uri ?: '');
     }
 
     /**

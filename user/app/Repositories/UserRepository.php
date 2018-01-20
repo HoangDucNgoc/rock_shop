@@ -2,6 +2,7 @@
 
 namespace App\Repositories;
 
+use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
 
 class UserRepository extends BaseRepository
@@ -17,8 +18,13 @@ class UserRepository extends BaseRepository
     {
         return DB::table('users')->insertGetId(
             [
-                'email'    => $user->email,
-                'password' => $user->password,
+                'email'      => $user->email,
+                'password'   => $user->password,
+                'username'   => $user->userName,
+                'is_active'  => $user->isActive,
+                'is_delete'  => $user->isDelete,
+                'created_at' => Carbon::now(),
+                'token'      => $user->token,
             ]
         );
     }

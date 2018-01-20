@@ -14,7 +14,7 @@
 /*
 *  middleware set just proxy and check json data request
 */
-$router->group(['middleware' => ['proxy','json']], function () use ($router) {
+$router->group(['middleware' => ['proxy','json','token']], function () use ($router) {
 
 	$router->post('/user/register', 'UserController@register'); 
   // $router->post('/user/register',['middleware' => 'auth'], 'UserController@register'); 

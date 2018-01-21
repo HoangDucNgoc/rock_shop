@@ -29,4 +29,17 @@ class UserRepository extends BaseRepository
         );
     }
 
+    /**
+     * get user by email
+     *
+     * @param  String $email
+     * @return App\Models\User
+     */
+    public function getUserByEmail($email)
+    {
+        return DB::table('users')
+            ->where('email', '=', $email)
+            ->first();
+    }
+
 }

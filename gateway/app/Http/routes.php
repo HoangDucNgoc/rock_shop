@@ -13,6 +13,7 @@
 $router->group(['middleware' => 'throttle'], function () use ($router) {
 
     $router->post('/user/register', 'UserController@register');
+    $router->get('/user/login', 'UserController@login');
 
     $router->group(['middleware' => 'auth'], function () use ($router) {
 

@@ -17,6 +17,7 @@
 $router->group(['middleware' => ['proxy','json','token']], function () use ($router) {
 
 	$router->post('/user/register', 'UserController@register'); 
+	$router->get('/user/login', 'UserController@login'); 
   // $router->post('/user/register',['middleware' => 'auth'], 'UserController@register'); 
 	   
 });

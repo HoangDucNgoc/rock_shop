@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ErrorCode;
+use App\Http\Requests\User\LoginRequest;
 use App\Http\Requests\User\RegisterRequest;
 use App\Http\Responses\UserResponse;
 use App\Repositories\UserRepository;
@@ -39,7 +40,47 @@ class UserController extends Controller
             $response->data    = $response->newUserResponse($user);
             $response->message = Lang::get('messages.register_success');
             return $response->responseData();
+        } else {
+            $response->message      = ErrorCode::DATA_ERROR;
+            $response->errorMessage = array(Lang::get('messages.register_fail'));
+            return $response->badRequest();
         }
+
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Login
+    |--------------------------------------------------------------------------
+    |    email       | string (250)       | required
+    |    password    | string             | required
+     */
+
+    public function login(UserResponse $response, Request $request, UserRepository $userRepository)
+    {
+        $loginRequest = new LoginRequest($request);
+
+        if ($loginRequest->validation()) {
+            $response->message      = ErrorCode::DATA_INVALID;
+            $response->errorMessage = $loginRequest->getErrors();
+            return $response->badRequest();
+        }
+
+        $login = $loginRequest->getData();
+
+        $user = $userRepository->getUserByEmail($login->email);
+        if ($user) {
+            if ($user->password == crypt($login->password, $user->password)) {
+                $response->data    = $response->newUserResponseWithUser($user);
+                $response->message = Lang::get('messages.login_success');
+                return $response->responseData();
+            }
+        }
+
+        $response->message      = ErrorCode::lOGIC_PROCESS_FAIL;
+        $response->errorMessage = array(Lang::get('messages.login_fail'));
+        return $response->badRequest();
+
     }
 
 }

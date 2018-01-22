@@ -60,7 +60,7 @@ class RegisterRequest
         $this->user->password = Hash::make($this->request->input('password'));
         $this->user->isActive = Status::ACTIVE;
         $this->user->isDelete = Status::UNDELETE;
-        $this->user->token    = base64_encode(Carbon::now() . '_' . env('PRIVATE_KEY_TOKEN'));
+        $this->user->token    = base64_encode(Carbon::now()->toDateTimeString() . '_' . env('PRIVATE_KEY_TOKEN') . '_' . $this->user->email);
         return $this->user;
     }
 

@@ -11,4 +11,7 @@ return [
     'register_fail'            => 'Đăng kí thất bại',
     'login_success'            => 'Đăng nhập thành công',
     'login_fail'               => 'Đăng nhập không thành công, kiểm tra lại email hoặc mật khẩu',
+    'check_token_success'      => 'Token hợp lệ',
+    'check_token_fail'         => 'Token không hợp lệ',
+    'token_required'           => 'Token không hợp lệ',
 ];

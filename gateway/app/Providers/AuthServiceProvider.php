@@ -2,7 +2,8 @@
 
 namespace App\Providers;
 
-//use App\Models\User;
+use App\Http\Curl\Facades\User as UserMicroservice;
+use Carbon\Carbon;
 use Illuminate\Support\ServiceProvider;
 
 class AuthServiceProvider extends ServiceProvider
@@ -24,18 +25,21 @@ class AuthServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        // Here you may define how you wish users to be authenticated for your Lumen
-        // application. The callback which receives the incoming request instance
-        // should return either a User instance or null. You're free to obtain
-        // the User instance via an API token or any other method necessary.
+        // Check user login
+        // call service user/check_token to check token
 
         $this->app['auth']->viaRequest('api', function ($request) {
-            /*if ($request->input('api_token')) {
-            return User::where('api_token', $request->input('api_token'))->first();
-            }*/
-           /* $user = new User();
-            $user->token = 'sdf';
-            return $user;*/
+            if ($request->header('token')) {
+                $appToken = Carbon::today()->toDateTimeString() . '_' . env('PRIVATE_REQUEST_KEY', 'TOKEN_INVALID');
+                $result   = UserMicroservice::checkToken(['headers' => [
+                    'token'     => $request->header('token'),
+                    'APP_TOKEN' => base64_encode($appToken),
+                ]]);
+                if ($result->getStatusCode() == 200) {
+                    return $result->getBody()->data;
+                }
+
+            }
         });
     }
 }

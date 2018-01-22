@@ -9,6 +9,7 @@
 		    - [Requests Limiter]
 	- facade.php new class : objectservice and objectendpoint 
 	- Each service can log request, response , and error
+	- Other service only accept request from service gateway 
 
 # Document 
 

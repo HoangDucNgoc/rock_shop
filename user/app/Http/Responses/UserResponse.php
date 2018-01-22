@@ -38,8 +38,9 @@ class UserResponse extends Response
         $user->firstName = $userModel->firstName;
         $user->lastName  = $userModel->lastName;
         $user->address   = $userModel->address;
-        $user->token     = $user->token;
+        $user->token     = $userModel->token;
         $user->birthday  = $userModel->birthday;
         return $user;
     }
+
 }

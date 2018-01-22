@@ -16,8 +16,9 @@ class CommonHelper
         $method      = $request->getMethod();
         $ip          = $request->getClientIp();
         $dataRequest = $request->getContent();
+        $dataHeader  = $request->header('app-token');
 
-        $log = "==================== \n {$ip}:  {$method}@{$url} [{$dataRequest}]";
+        $log = "==================== \n {$ip}:  {$method}@{$url} @AppToken:[{$dataHeader}] @Data:[{$dataRequest}] ";
         Log::info($log);
     }
 

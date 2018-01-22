@@ -2,8 +2,8 @@
 
 namespace App\Http\Middleware;
 
-use Closure;
 use Carbon\Carbon;
+use Closure;
 use Illuminate\Cache\RateLimiter;
 use Symfony\Component\HttpFoundation\Response;
 
@@ -15,7 +15,7 @@ class ThrottleRequests
      * @var \Illuminate\Cache\RateLimiter
      */
     protected $limiter;
-
+    protected $token;
     /**
      * Create a new request throttler instance.
      *
@@ -99,12 +99,12 @@ class ThrottleRequests
     protected function addHeaders(Response $response, $maxAttempts, $remainingAttempts, $retryAfter = null)
     {
         $headers = [
-            'X-RateLimit-Limit' => $maxAttempts,
+            'X-RateLimit-Limit'     => $maxAttempts,
             'X-RateLimit-Remaining' => $remainingAttempts,
         ];
 
-        if (! is_null($retryAfter)) {
-            $headers['Retry-After'] = $retryAfter;
+        if (!is_null($retryAfter)) {
+            $headers['Retry-After']       = $retryAfter;
             $headers['X-RateLimit-Reset'] = Carbon::now()->getTimestamp() + $retryAfter;
         }
 
@@ -123,7 +123,7 @@ class ThrottleRequests
      */
     protected function calculateRemainingAttempts($key, $maxAttempts, $retryAfter = null)
     {
-        if (! is_null($retryAfter)) {
+        if (!is_null($retryAfter)) {
             return 0;
         }
 

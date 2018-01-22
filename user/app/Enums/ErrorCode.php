@@ -8,6 +8,8 @@ abstract class ErrorCode
     const UNAUTHORIZED = 401;
     const FORBIDDEN    = 403;
 
-    const DATA_INVALID = "Data invalid";
+    const DATA_INVALID       = "Data invalid";
+    const DATA_ERROR         = "Data error";
+    const lOGIC_PROCESS_FAIL = "Logic process fail";
 
 }

@@ -4,7 +4,7 @@ namespace App\Http\Curl\Endpoints\User;
 
 use App\Http\Curl\Endpoints\Endpoint;
 
-class RegisterEndpoint extends Endpoint
+class CheckTokenEndPoint extends Endpoint
 {
     /**
      * The endpoint URI.
@@ -13,13 +13,13 @@ class RegisterEndpoint extends Endpoint
      */
     //protected $uri = 'user/profile/token';
 
-    protected $uri = '/user/register';
+    protected $uri = '/user/check_token';
     /**
      * The endpoint method.
      *
      * @var string
      */
-    protected $method = 'POST';
+    protected $method = 'GET';
 
     /**
      * status request.

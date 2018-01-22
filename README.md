@@ -9,6 +9,7 @@
 		    - [Requests Limiter]
 	- facade.php new class : objectservice and objectendpoint 
 	- Each service can log request, response , and error
+	- Other service only accept request from service gateway 
 
 # Document 
 
@@ -23,6 +24,8 @@
 	- composer update 
 	- copy .env.example --> .env 
 		- config ip service
+		- config PRIVATE_GATEWAY_KEY
+		- config PRIVATE_REQUEST_KEY (value must same PRIVATE_GATEWAY_KEY)
 # how to run
    	- create NameService : name , uri  
    	- create NameEndPoint : url api, method , async

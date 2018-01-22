@@ -28,11 +28,37 @@ class UserController extends Controller
     {
         $result = UserMicroservice::register(['json' => (array) json_decode($request->getContent())]);
 
-        if ($result) {
+        if ($result && $result->getStatusCode() != 500) {
             return response()->json($result->getBody(), $result->getStatusCode());
         }
         return response()->json("Error Server", 500);
     }
 
-    //
+    /*
+    |--------------------------------------------------------------------------
+    | Login
+    |--------------------------------------------------------------------------
+    |    email       | string (250)       | required
+    |    password    | string             | required
+     */
+    public function login(Request $request)
+    {
+        $result = UserMicroservice::login(['query' => $request->query()]);
+        if ($result && $result->getStatusCode() != 500) {
+            return response()->json($result->getBody(), $result->getStatusCode());
+        }
+        return response()->json("Error Server", 500);
+    }
+
+    /*
+    |--------------------------------------------------------------------------
+    | Profile
+    |--------------------------------------------------------------------------
+    |    token       | string (250)       | required
+     */
+    public function profile(Request $request)
+    {
+        return response()->json($request->user(), 200);
+    }
+
 }

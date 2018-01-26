@@ -11,6 +11,6 @@
 |
 */
 
-$router->get('/', function () use ($router) {
-    return $router->app->version();
+$router->group(['middleware' => ['json', 'token']], function () use ($router) {
+    $router->get('/home', 'HomeController@home');
 });

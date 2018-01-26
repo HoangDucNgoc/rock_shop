@@ -19,11 +19,21 @@ try {
 |
 */
 
+
+
 $app = new Laravel\Lumen\Application(
     realpath(__DIR__.'/../')
 );
 
-// $app->withFacades();
+/*
+Register config
+ */
+
+$app->configure('trustedproxy');
+$app->configure('app');
+
+
+$app->withFacades();
 
 // $app->withEloquent();
 
@@ -66,6 +76,15 @@ $app->singleton(
 // $app->routeMiddleware([
 //     'auth' => App\Http\Middleware\Authenticate::class,
 // ]);
+
+$app->routeMiddleware([
+    'auth' => App\Http\Middleware\Authenticate::class,
+]);
+
+$app->routeMiddleware([
+    'json'  => App\Http\Middleware\JsonMiddleware::class,
+    'token' => App\Http\Middleware\CheckTokenMiddleware::class,
+]);
 
 /*
 |--------------------------------------------------------------------------

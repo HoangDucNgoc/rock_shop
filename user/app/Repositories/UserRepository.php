@@ -67,6 +67,8 @@ class UserRepository extends BaseRepository
             $user->token     = $userTable->token;
             $user->birthday  = $userTable->birthday;
             $user->password  = $userTable->password;
+            $user->roleId    = $userTable->role_id;
+            $user->groupItem = $userTable->group_item;
             return $user;
         }
         return null;
@@ -90,6 +92,8 @@ class UserRepository extends BaseRepository
             $user->token     = $userTable->token;
             $user->birthday  = $userTable->birthday;
             $user->password  = $userTable->password;
+            $user->roleId    = $userTable->role_id;
+            $user->groupItem = $userTable->group_item;
             return $user;
         }
         return null;

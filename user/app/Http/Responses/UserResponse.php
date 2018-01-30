@@ -2,6 +2,9 @@
 
 namespace App\Http\Responses;
 
+use App\Repositories\RoleRepository;
+use App\Repositories\FeatureRepository;
+
 /**
  * Use for response to client
  */
@@ -17,6 +20,16 @@ class User
     public $token;
     public $birthday;
     public $role;
+    public $feature;
+    public $groupItem;
+}
+
+/**
+* Role
+**/
+class Role
+{
+    public $name;
 }
 
 class UserResponse extends Response
@@ -40,7 +53,26 @@ class UserResponse extends Response
         $user->address   = $userModel->address;
         $user->token     = $userModel->token;
         $user->birthday  = $userModel->birthday;
+        $user->groupItem = $userModel->groupItem;
+        $user->role      = $this->getRole($userModel->roleId);
+        $user->feature   = $this->getFeature($userModel->roleId);
         return $user;
+    }
+
+    private function getRole($roleId)
+    {
+        $roleRepository = new RoleRepository();
+        $role = new Role();
+        $result = $roleRepository->getRoleByid($roleId);
+        if($result){
+            $role->name = $result->name;
+        }
+        return $role;
+    }
+
+    private function getFeature($roleId) {
+        $featureRepository = new FeatureRepository();
+        return $featureRepository->getFeature($roleId);
     }
 
 }

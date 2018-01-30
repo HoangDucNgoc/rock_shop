@@ -2,7 +2,7 @@
 
 namespace App\Http\Controllers;
 
-class ExampleController extends Controller
+class CategoryController extends Controller
 {
     /**
      * Create a new controller instance.
@@ -14,7 +14,7 @@ class ExampleController extends Controller
         //
     }
 
-    public function home()
+    public function listCategory()
     {
         echo 'sdf';
 

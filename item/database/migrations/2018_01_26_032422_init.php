@@ -63,6 +63,7 @@ class Init extends Migration
             $table->timestamps();
         });
 
+        // save additionfion of item, some config
         Schema::create('config', function (Blueprint $table) {
             $table->increments('id');
             $table->string('name');
@@ -80,6 +81,11 @@ class Init extends Migration
      */
     public function down()
     {
-
+        Schema::dropIfExists('category');
+        Schema::dropIfExists('group_items');
+        Schema::dropIfExists('html_view');
+        Schema::dropIfExists('items');
+        Schema::dropIfExists('item_info');
+        Schema::dropIfExists('config');
     }
 }

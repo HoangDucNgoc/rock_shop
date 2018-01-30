@@ -12,5 +12,5 @@
 */
 
 $router->group(['middleware' => ['json', 'token']], function () use ($router) {
-    $router->get('/home', 'HomeController@home');
+    $router->get('/categories', 'CategoryController@listCategory');
 });

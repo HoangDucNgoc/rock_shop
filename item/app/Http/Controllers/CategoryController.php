@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Repositories\CategoryRepository;
+
 class CategoryController extends Controller
 {
     /**
@@ -14,9 +16,9 @@ class CategoryController extends Controller
         //
     }
 
-    public function listCategory()
+    public function listCategory(CategoryRepository $categoryReppsitory)
     {
-        echo 'sdf';
+        return $categoryReppsitory->getListCategory();
 
     }
 }

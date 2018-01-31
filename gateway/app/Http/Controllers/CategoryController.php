@@ -25,14 +25,11 @@ class CategoryController extends Controller
     public function listCategory(Request $request)
     {
 
-       $result = ItemMicroservice::listCategory();
-       var_dump($result);
-
-        /*if ($result && $result->getStatusCode() != 500) {
+        $result = ItemMicroservice::listCategory();
+        if ($result && $result->getStatusCode() != 500) {
             return response()->json($result->getBody(), $result->getStatusCode());
         }
-        return response()->json("Error Server", 500);*/
-        echo "string";
+        return response()->json("Error Server", 500);
     }
    
 

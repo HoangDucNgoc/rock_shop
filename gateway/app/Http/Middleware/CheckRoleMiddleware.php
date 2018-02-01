@@ -15,9 +15,8 @@ class CheckRoleMiddleware
     }
 
     private function retriveRole($request){
-
         $role = '';
-        switch ($request->method()) {
+        switch (strtolower($request->method())) {
             case 'post':
                 $role =  'create';
                 break;
@@ -46,12 +45,10 @@ class CheckRoleMiddleware
     {
         $user = $request->user();
         $path = $request->path();
-
         if(isset($user->feature->$path)){
             $nameRole = $this->retriveRole($request);
             if($user->feature->$path->$nameRole == Role::ACCEPT ){
                 return $next($request);
-
             }
         } 
 

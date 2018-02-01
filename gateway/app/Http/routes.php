@@ -35,6 +35,7 @@ $router->group(['middleware' => 'throttle'], function () use ($router) {
         $router->group(['prefix' => 'admin','middleware' => 'role'], function () use ($router) {
 
 		    $router->get('/category', 'CategoryController@listCategory');
+		    $router->post('/category', 'CategoryController@createCategory');
 		});
     });
 

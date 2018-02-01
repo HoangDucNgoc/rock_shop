@@ -24,8 +24,16 @@ class CategoryController extends Controller
      */
     public function listCategory(Request $request)
     {
+        $result = ItemMicroservice::listCategory(['json' => array('ids'=>$request->user()->groupItem)]);
+        if ($result && $result->getStatusCode() != 500) {
+            return response()->json($result->getBody(), $result->getStatusCode());
+        }
+        return response()->json("Error Server", 500);
+    }
 
-        $result = ItemMicroservice::listCategory();
+    public function createCategory(Request $request){
+
+        $result = ItemMicroservice::createCategory(['json' => (array) json_decode($request->getContent())]);
         if ($result && $result->getStatusCode() != 500) {
             return response()->json($result->getBody(), $result->getStatusCode());
         }

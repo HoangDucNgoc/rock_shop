@@ -2,7 +2,7 @@
 
 return [
 	'fallback_locale' => 'vn',
-	 'locale' => 'en',
-'log' => 'daily'
+	'locale' => 'en',
+	'log' => 'daily'
 	 
 ];

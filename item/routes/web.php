@@ -13,4 +13,5 @@
 
 $router->group(['middleware' => ['json', 'token']], function () use ($router) {
     $router->get('/categories', 'CategoryController@listCategory');
+    $router->post('/category', 'CategoryController@createCategory');
 });

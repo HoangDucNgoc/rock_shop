@@ -36,6 +36,8 @@ $router->group(['middleware' => 'throttle'], function () use ($router) {
 
 		    $router->get('/category', 'CategoryController@listCategory');
 		    $router->post('/category', 'CategoryController@createCategory');
+		    $router->put('/category', 'CategoryController@updateCategory');
+		    $router->delete('/category', 'CategoryController@deleteCategory');
 		});
     });
 

@@ -11,7 +11,6 @@ class ListCategoryEndpoint extends Endpoint
      *
      * @var string
      */
-    //protected $uri = 'user/profile/token';
 
     protected $uri = '/categories';
     /**

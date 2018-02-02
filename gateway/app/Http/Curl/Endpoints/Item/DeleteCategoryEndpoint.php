@@ -4,7 +4,7 @@ namespace App\Http\Curl\Endpoints\Item;
 
 use App\Http\Curl\Endpoints\Endpoint;
 
-class CreateCategoryEndPoint extends Endpoint
+class DeleteCategoryEndPoint extends Endpoint
 {
     /**
      * The endpoint URI.
@@ -18,7 +18,7 @@ class CreateCategoryEndPoint extends Endpoint
      *
      * @var string
      */
-    protected $method = 'POST';
+    protected $method = 'delete';
 
     /**
      * status request.

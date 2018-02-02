@@ -35,7 +35,26 @@ class InitDataSeeder extends Seeder {
 					'is_active' => Status::ACTIVE,
 					'is_delete' => Status::UNDELETE,
 				],
+				[
+					'name' => 'admin/user',
+					'description' => 'manage user',
+					'is_active' => Status::ACTIVE,
+					'is_delete' => Status::UNDELETE,
+				],
 				
+			]
+		);
+
+		DB::table('role_feature')->insert(
+			[
+				[
+					'role_id' => 1,
+					'feature_id' => 1,
+					'create' => 1,
+					'update' => 1,
+					'delete' => 1,
+					'view' => 1,
+				]
 			]
 		);
 	}

@@ -55,6 +55,36 @@ class CategoryRepository extends BaseRepository {
 	}
 
 	/**
+	 * Get category detail by field
+	 * @param @field array  Ex : ['name' => "name"]
+	 * @return $result array
+	 */
+	public function getCategoryByField($field,$query  = null) {
+
+		$sql = 'select id,name,group_item,description,parent_id from category where is_delete = :is_delete and is_active =:is_active ';
+		$parameter = array(
+			'is_delete' => Status::UNDELETE,
+			'is_active' => Status::ACTIVE,
+		);
+
+		foreach ($field as $key => $value) {
+			$sql .= " and $key =:$key";
+			$parameter[$key] = $value;
+		}
+
+		$sql .= " and $query " .  ' limit 1';
+
+		$result = DB::select($sql, $parameter);
+
+		if (count($result) == 0) {
+			return null;
+		}
+
+		return $result[0];
+
+	}
+
+	/**
 	 * new category
 	 * @param $category /App/Models/Category.php
 	 * @return $result array
@@ -68,6 +98,35 @@ class CategoryRepository extends BaseRepository {
 			$category->description,
 			$category->isActive,
 			$category->isDelete,
+		]
+		);
+	}
+
+	/**
+	 * new category
+	 * @param $category /App/Models/Category.php
+	 * @return integer
+	 */
+	public function updateCategory($category) {
+		return DB::update('update category set name = ? , parent_id = ?, group_item = ?, description = ? where id = ?', [
+			$category->name,
+			$category->parentId,
+			$category->groupItem,
+			$category->description,
+			$category->id,
+		]
+		);
+	}
+
+	/**
+	 * delete category
+	 * @param $category /App/Models/Category.php
+	 * @return integer
+	 */
+	public function deleteCategory($id) {
+		return DB::update('update category set is_delete = ? where id = ?', [
+			Status::DELETE,
+			$id
 		]
 		);
 	}

@@ -11,5 +11,6 @@ abstract class ErrorCode {
 	const DATA_ERROR = "Data error";
 	const lOGIC_PROCESS_FAIL = "Logic process fail";
 	const SAVE_DATA_FAIL = "Create data fail";
+	const SAVE_DATA_SUCCESS = "Save data success";
 
 }

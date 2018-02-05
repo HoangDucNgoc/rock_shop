@@ -14,7 +14,7 @@ class CategoryRepository extends BaseRepository {
 	 */
 	public function getListCategory($group_item = null) {
 
-		$sql = 'select id,name,group_item,description,parent_id from category where is_delete = :is_delete and is_active =:is_active';
+		$sql = 'select id,name,group_item,description,parent_id, level from category where is_delete = :is_delete and is_active =:is_active order by level';
 		$parameter = array(
 			'is_delete' => Status::UNDELETE,
 			'is_active' => Status::ACTIVE,

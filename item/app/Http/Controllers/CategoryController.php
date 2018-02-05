@@ -34,9 +34,32 @@ class CategoryController extends Controller {
 
 		$groupItems = $groupItemRepository->listGroupItem($listCategoryRequest->getData());
 		$categories = $categoryReppsitory->getListCategory();
-		$response->message = '';
+		$data = array();
+		for ($i=1; $i <= 4 ; $i++) { 
+
+			foreach ($categories as $key => $value) {
+				if($value->level== 1){
+					$data['parent_' . $value->id] = $value;
+					$value->child = 'child_' . $value->id;
+					unset($categories[$key]);
+				}else{
+						if($value->level > $i) {
+							break;
+						}
+
+						$data['child_'.$value->parent_id][] = $value;
+						$value->child = 'child_' . $value->id;
+						unset($categories[$key]);
+				}
+
+
+			}
+			
+		}
+		var_dump($data);
+		/*$response->message = '';
 		$response->data = $response->newListCategory($groupItems, $categories);
-		return $response->responseData();
+		return $response->responseData();*/
 
 	}
 

@@ -25,24 +25,27 @@ class CategoryResponse extends Response {
 	 */
 	public function newListCategory($groupItems, $categories) {
 		$data = array();
-		foreach ($groupItems as $key => $item) {
-			$groupItems = new GroupItems();
-			$groupItems->id = $item->id;
-			$groupItems->name = $item->name;
-			$groupItems->categories = array();
-			$data['group_' . $item->id] = $groupItems;
-		}
+		for ($i = 1; $i <= 4; $i++) {
 
-		foreach ($categories as $key => $item) {
-			$category = new Category();
-			$category->id = $item->id;
-			$category->name = $item->name;
-			$category->parentId = $item->parent_id;
-			$category->description = $item->description;
-			$data['group_' . $item->group_item]->categories[] = $category;
-		}
+			foreach ($categories as $key => $value) {
+				if ($value->level == 1) {
+					$data['parent_' . $value->id] = $value;
+					$value->child = 'child_' . $value->id;
+					unset($categories[$key]);
+				} else {
+					if ($value->level > $i) {
+						break;
+					}
 
-		return (array) $data;
+					$data['child_' . $value->parent_id][] = $value;
+					$value->child = 'child_' . $value->id;
+					unset($categories[$key]);
+				}
+
+			}
+
+		}
+		return $data;
 	}
 
 	public function newCategoryWithModel($categoryModel) {

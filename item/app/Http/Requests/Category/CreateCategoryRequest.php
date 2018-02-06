@@ -14,10 +14,12 @@ class CreateCategoryRequest {
 	private $request;
 	private $category;
 	private $errors; // array
+	private $level;
 
 	public function __construct($requestForm) {
 		$this->request = $requestForm;
 		$this->category = new Category();
+		$this->level = 0;
 	}
 
 	public function validation() {
@@ -43,8 +45,12 @@ class CreateCategoryRequest {
 			if ($parentId) {
 				$categoryRepository = new CategoryRepository();
 				// not exist category parent
-				if ($categoryRepository->getCategoryById($parentId) == null) {
+				$category = $categoryRepository->getCategoryById($parentId);
+
+				if ( $category == null) {
 					$validator->getMessageBag()->add('parent_id', Lang::get('messages.parent_cateory_not_exist'));
+				}else{
+					$this->level = $category->level + 1;
 				}
 			}
 
@@ -75,6 +81,7 @@ class CreateCategoryRequest {
 		$this->category->isDelete = Status::UNDELETE;
 		$this->category->groupItem = $this->request->input('group_item');
 		$this->category->parentId = ($this->request->input('parent_id') != null) ? $this->request->input('parent_id') : 0;
+		$this->category->level = $this->level;
 		return $this->category;
 	}
 

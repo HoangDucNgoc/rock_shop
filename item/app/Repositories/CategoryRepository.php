@@ -31,13 +31,39 @@ class CategoryRepository extends BaseRepository {
 	}
 
 	/**
+	 * Get list category by parent ids
+	 * @param @ids array
+	 * @return $result array
+	 */
+	public function getListCategoryByParentIds($ids) {
+
+		$sql = 'select id,name,group_item,description,parent_id, level from category where is_delete = :is_delete and is_active =:is_active and parent_id IN(:ids)';
+		$parameter = array(
+			'is_delete' => Status::UNDELETE,
+			'is_active' => Status::ACTIVE,
+			'ids' => implode(',', $ids)
+		);
+
+		$result = DB::select($sql, $parameter);
+
+		if(count($result) == 0 ){
+			return null;
+		}
+
+		return $result;
+
+	}
+
+
+
+	/**
 	 * Get category detail
 	 * @param @id int
 	 * @return $result array
 	 */
 	public function getCategoryById($id) {
 
-		$sql = 'select id,name,group_item,description,parent_id from category where is_delete = :is_delete and is_active =:is_active and id =:id limit 1';
+		$sql = 'select id,name,group_item,description,parent_id,level from category where is_delete = :is_delete and is_active =:is_active and id =:id limit 1';
 		$parameter = array(
 			'is_delete' => Status::UNDELETE,
 			'is_active' => Status::ACTIVE,
@@ -51,6 +77,30 @@ class CategoryRepository extends BaseRepository {
 		}
 
 		return $result[0];
+
+	}
+
+	/**
+	 * Get category child
+	 * @param @parentId int
+	 * @return $result array
+	 */
+	public function getCategoryChild($parentId) {
+
+		$sql = 'select id,name,group_item,description,parent_id,level from category where is_delete = :is_delete and is_active =:is_active and parent_id =:parent_id';
+		$parameter = array(
+			'is_delete' => Status::UNDELETE,
+			'is_active' => Status::ACTIVE,
+			'parent_id' => $parentId,
+		);
+
+		$result = DB::select($sql, $parameter);
+
+		if (count($result) == 0) {
+			return null;
+		}
+
+		return $result;
 
 	}
 
@@ -91,13 +141,14 @@ class CategoryRepository extends BaseRepository {
 	 */
 	public function createCategory($category) {
 
-		return DB::insert('insert into category (name , parent_id, group_item , description, is_active , is_delete) values (?, ?, ?, ?, ?, ?)', [
+		return DB::insert('insert into category (name , parent_id, group_item , description, is_active , is_delete, level) values (?, ?, ?, ?, ?, ?, ?)', [
 			$category->name,
 			$category->parentId,
 			$category->groupItem,
 			$category->description,
 			$category->isActive,
 			$category->isDelete,
+			$category->level
 		]
 		);
 	}
@@ -108,12 +159,26 @@ class CategoryRepository extends BaseRepository {
 	 * @return integer
 	 */
 	public function updateCategory($category) {
-		return DB::update('update category set name = ? , parent_id = ?, group_item = ?, description = ? where id = ?', [
+		return DB::update('update category set name = ? , parent_id = ?, group_item = ?, description = ?, level = ? where id = ?', [
 			$category->name,
 			$category->parentId,
 			$category->groupItem,
 			$category->description,
+			$category->level,
 			$category->id,
+		]
+		);
+	}
+
+	/**
+	 * update level category
+	 * @param $category /App/Models/Category.php
+	 * @return integer
+	 */
+	public function updateLevelCategory($id, $level) {
+		return DB::update('update category set level = ? where id = ?', [
+			$level,
+			$id,
 		]
 		);
 	}

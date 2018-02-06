@@ -18,7 +18,7 @@ class CheckTokenMiddleware {
 		$gatewayToken = $request->header('app-token');
 
 		// check token gateway
-		if ($gatewayToken != '' && $gatewayToken != 'TOKEN_INVALID') {
+		/*if ($gatewayToken != '' && $gatewayToken != 'TOKEN_INVALID') {
 			$decode = explode('_', base64_decode($gatewayToken));
 			if (!isset($decode[1]) || $decode[1] != env('PRIVATE_GATEWAY_KEY')) {
 				return $response->formatInvalid();
@@ -26,7 +26,7 @@ class CheckTokenMiddleware {
 
 		} else {
 			return $response->formatInvalid();
-		}
+		}*/
 
 		return $next($request);
 	}

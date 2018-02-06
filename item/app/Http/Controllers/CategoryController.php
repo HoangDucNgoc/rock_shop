@@ -12,6 +12,7 @@ use App\Repositories\CategoryRepository;
 use App\Repositories\GroupItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
+use App\Models\Category;
 
 class CategoryController extends Controller {
 	/**
@@ -38,7 +39,7 @@ class CategoryController extends Controller {
 		$categories = $categoryReppsitory->getListCategory($groupItem);
 
 		$response->message = '';
-		$response->data = $response->newListCategory($groupItems, $categories);
+		$response->data =  $response->newListCategory($groupItems, $categories);
 		return $response->responseData();
 
 	}
@@ -61,6 +62,7 @@ class CategoryController extends Controller {
 		}
 
 		$category = $createCategoryRequest->getData();
+
 		$result = $categoryReppsitory->createCategory($category);
 		if ($result) {
 			$response->message = Lang::get('messages.create_category_success');
@@ -94,6 +96,22 @@ class CategoryController extends Controller {
 
 		$category = $updateCategoryRequest->getData();
 		$result = $categoryReppsitory->updateCategory($category);
+		$arrParrent = array($category->id);
+		// update level for all child category of category update
+		for ($i=1; $i <= 5 ; $i++) { 
+			$categories = $categoryReppsitory->getListCategoryByParentIds($arrParrent);
+			$arrParrent = array();
+			if($categories == null) {
+				break;
+			}
+			foreach ($categories as $key => $value) {
+
+				$value->level = $value->level +  $updateCategoryRequest->levelRun;
+				$categoryReppsitory->updateLevelCategory($value->id,$value->level);
+				$arrParrent[] = $value->id;
+			}
+		}
+
 		$response->message = Lang::get('messages.update_category_success');
 		$response->data = $response->newCategoryWithModel($category);
 		return $response->responseData();

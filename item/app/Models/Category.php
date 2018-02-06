@@ -12,5 +12,6 @@ class Category {
 	public $isDelete;
 	public $createdAt;
 	public $updatedAt;
+	public $level;
 
 }

@@ -16,6 +16,7 @@
 # Technology
 	- php 7.0
 	- lumen laravel 5.5
+	- Use encrypt : https://laravel.com/docs/5.5/encryption#configuration
 	
 # Install
 	- filter ip via apache

@@ -33,7 +33,7 @@ class AuthServiceProvider extends ServiceProvider
                 $appToken = Carbon::today()->toDateTimeString() . '_' . env('PRIVATE_REQUEST_KEY', 'TOKEN_INVALID');
                 $result   = UserMicroservice::checkToken(['headers' => [
                     'token'     => $request->header('token'),
-                    'APP_TOKEN' => base64_encode($appToken),
+                    'APP_TOKEN' => encrypt($appToken),
                 ]]);
                 if ($result->getStatusCode() == 200) {
                     return $result->getBody()->data;

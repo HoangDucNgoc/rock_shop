@@ -131,10 +131,10 @@ class HttpClient implements HttpClientContract
         ];
 
         $appToken = Carbon::today()->toDateTimeString() . '_' . env('PRIVATE_REQUEST_KEY', 'TOKEN_INVALID');
-
+        
         $header = [
             'headers' => [
-                'APP_TOKEN' => base64_encode($appToken),
+                'APP_TOKEN' => encrypt($appToken),
             ],
         ];
 

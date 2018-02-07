@@ -19,5 +19,6 @@ class User
     public $roleId;
     public $createdAt;
     public $updatedAt;
+    public $groupItem;
 
 }

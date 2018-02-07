@@ -73,7 +73,7 @@ class UserController extends Controller
 
         if ($user) {
             if ($user->password == crypt($login->password, $user->password)) {
-                $user->token = base64_encode(Carbon::now()->toDateTimeString() . '_' . env('PRIVATE_KEY_TOKEN') . '_' . $user->email);
+                $user->token = encrypt(Carbon::now()->toDateTimeString() . '_' . env('PRIVATE_KEY_TOKEN') . '_' . $user->email);
                 if ($userRepository->updateUser($user)) {
                     $response->data    = $response->newUserResponse($user);
                     $response->message = Lang::get('messages.login_success');
@@ -107,7 +107,7 @@ class UserController extends Controller
         }
 
         $userToken = $checkTokenRequest->getData();
-        $decode    = explode('_', base64_decode($userToken->token));
+        $decode    = explode('_', decrypt($userToken->token));
         if (isset($decode[1]) && $decode[1] == env('PRIVATE_KEY_TOKEN')) {
 
             $user = $userRepository->getUserByToken($userToken->token);

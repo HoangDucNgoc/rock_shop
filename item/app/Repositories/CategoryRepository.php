@@ -13,20 +13,18 @@ class CategoryRepository extends BaseRepository {
 	 * @return $result array
 	 */
 	public function getListCategory($group_item = null) {
-
-		$sql = 'select id,name,group_item,description,parent_id, level from category where is_delete = :is_delete and is_active =:is_active order by level';
-		$parameter = array(
-			'is_delete' => Status::UNDELETE,
-			'is_active' => Status::ACTIVE,
-		);
-
+		
+		$groupItems = array();
 		if ($group_item != null) {
-			$sql .= ' and group_item =:group_item';
-			$parameter['group_item'] = $group_item;
+			$groupItems['group_item'] = $group_item;
 		}
 
-		$result = DB::select($sql, $parameter);
-		return $result;
+		return BaseRepository::getMultiData(
+								'category', // table
+								array('id','name','group_item','description','parent_id','level'), // select
+								$groupItems , // query
+								array('order_by' => 'order by level') // option
+							);
 
 	}
 
@@ -37,20 +35,12 @@ class CategoryRepository extends BaseRepository {
 	 */
 	public function getListCategoryByParentIds($ids) {
 
-		$sql = 'select id,name,group_item,description,parent_id, level from category where is_delete = :is_delete and is_active =:is_active and parent_id IN(:ids)';
-		$parameter = array(
-			'is_delete' => Status::UNDELETE,
-			'is_active' => Status::ACTIVE,
-			'ids' => implode(',', $ids)
-		);
-
-		$result = DB::select($sql, $parameter);
-
-		if(count($result) == 0 ){
-			return null;
-		}
-
-		return $result;
+		return BaseRepository::getMultiData(
+								'category', // table
+								array('id','name','group_item','description','parent_id','level'), // select
+								array() , // query
+								array('in' => array('parent_id' => implode(',', $ids))) // option
+							);
 
 	}
 
@@ -63,21 +53,12 @@ class CategoryRepository extends BaseRepository {
 	 */
 	public function getCategoryById($id) {
 
-		$sql = 'select id,name,group_item,description,parent_id,level from category where is_delete = :is_delete and is_active =:is_active and id =:id limit 1';
-		$parameter = array(
-			'is_delete' => Status::UNDELETE,
-			'is_active' => Status::ACTIVE,
-			'id' => $id,
-		);
 
-		$result = DB::select($sql, $parameter);
-
-		if (count($result) == 0) {
-			return null;
-		}
-
-		return $result[0];
-
+		return BaseRepository::getSignleData(
+								'category',
+								array('id','name','group_item','description','parent_id','level'), // select
+								array('id' => $id)
+							);
 	}
 
 	/**
@@ -87,20 +68,11 @@ class CategoryRepository extends BaseRepository {
 	 */
 	public function getCategoryChild($parentId) {
 
-		$sql = 'select id,name,group_item,description,parent_id,level from category where is_delete = :is_delete and is_active =:is_active and parent_id =:parent_id';
-		$parameter = array(
-			'is_delete' => Status::UNDELETE,
-			'is_active' => Status::ACTIVE,
-			'parent_id' => $parentId,
-		);
-
-		$result = DB::select($sql, $parameter);
-
-		if (count($result) == 0) {
-			return null;
-		}
-
-		return $result;
+		return BaseRepository::getMultiData(
+								'category', // table
+								array('id','name','group_item','description','parent_id','level'), // select
+								array('parent_id' => $parentId)  // query
+							);
 
 	}
 
@@ -111,27 +83,13 @@ class CategoryRepository extends BaseRepository {
 	 */
 	public function getCategoryByField($field,$query  = null) {
 
-		$sql = 'select id,name,group_item,description,parent_id from category where is_delete = :is_delete and is_active =:is_active ';
-		$parameter = array(
-			'is_delete' => Status::UNDELETE,
-			'is_active' => Status::ACTIVE,
-		);
 
-		foreach ($field as $key => $value) {
-			$sql .= " and $key =:$key";
-			$parameter[$key] = $value;
-		}
-
-		$sql .= " and $query " .  ' limit 1';
-
-		$result = DB::select($sql, $parameter);
-
-		if (count($result) == 0) {
-			return null;
-		}
-
-		return $result[0];
-
+		return BaseRepository::getSignleData(
+								'category',
+								array('id','name','group_item','description','parent_id','level'), // select
+								$field, // query
+								$query
+							);
 	}
 
 	/**

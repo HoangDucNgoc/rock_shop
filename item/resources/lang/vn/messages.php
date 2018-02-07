@@ -13,5 +13,6 @@ return [
 	'update_category_success' => 'Cập nhật danh mục thành công',
 	'create_category_success' => 'Tạo danh mục thành công',
 	'id_category_required' => 'Danh mục không được để trống',
-	'delete_category_success' => 'Xóa danh mục thành công'
+	'delete_category_success' => 'Xóa danh mục thành công',
+	'category_have_child_can_not_delete' => 'Danh mục có danh mục con không thể xóa'
 ];

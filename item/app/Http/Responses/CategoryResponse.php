@@ -21,9 +21,10 @@ class CategoryResponse extends Response {
 	 *
 	 * @param  Illuminate\Support\Facades\DB stdClass $groupItems
 	 * @param  Illuminate\Support\Facades\DB stdClass $categories
+	 * @param  Integer $maxLevel
 	 * @return App\Http\Responses\Response
 	 */
-	public function newListCategory($groupItems, $categories) {
+	public function newListCategory($groupItems, $categories, $maxLevel) {
 		$data = array();
 
 		foreach ($groupItems as $key_item => $group) {
@@ -34,7 +35,7 @@ class CategoryResponse extends Response {
 			$tempGroup->name = $group->name;
 			$tempGroup->categories = array();
 
-			for ($i = 1; $i <= 4; $i++) {
+			for ($i = 1; $i <= $maxLevel; $i++) {
 
 				foreach ($categories as $key => $value) {
 					if($value->group_item == $group->id){

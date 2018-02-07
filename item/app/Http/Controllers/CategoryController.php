@@ -9,19 +9,26 @@ use App\Http\Requests\Category\ListCategoryRequest;
 use App\Http\Requests\Category\UpdateCategoryRequest;
 use App\Http\Responses\CategoryResponse;
 use App\Repositories\CategoryRepository;
+use App\Repositories\ConfigRepository;
 use App\Repositories\GroupItemRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Lang;
 use App\Models\Category;
 
 class CategoryController extends Controller {
+
+	private $maxLevelMenu;
+	private $categoryRepository;
 	/**
 	 * Create a new controller instance.
 	 *
 	 * @return void
 	 */
-	public function __construct() {
-		//
+	public function __construct(CategoryRepository $categoryRepository, ConfigRepository $configRepository) {
+		$this->categoryRepository = $categoryRepository;
+
+		$this->maxLevelMenu = $configRepository->getConfigByName('level_menu')->value;
+
 	}
 
 	/*
@@ -30,16 +37,16 @@ class CategoryController extends Controller {
 		    |--------------------------------------------------------------------------
 		    |    ids       | int       |
 	*/
-	public function listCategory(CategoryRepository $categoryReppsitory, GroupItemRepository $groupItemRepository, Request $request, CategoryResponse $response) {
+	public function listCategory(GroupItemRepository $groupItemRepository, Request $request, CategoryResponse $response) {
 
 		$listCategoryRequest = new ListCategoryRequest($request);
 		$groupItem = $listCategoryRequest->getData();
 
 		$groupItems = $groupItemRepository->listGroupItem($groupItem);
-		$categories = $categoryReppsitory->getListCategory($groupItem);
+		$categories = $this->categoryRepository->getListCategory($groupItem);
 
 		$response->message = '';
-		$response->data =  $response->newListCategory($groupItems, $categories);
+		$response->data =  $response->newListCategory($groupItems, $categories, $this->maxLevelMenu);
 		return $response->responseData();
 
 	}
@@ -53,7 +60,7 @@ class CategoryController extends Controller {
 		    | description| String       |
 		    | parent_id  | integer
 	*/
-	public function createCategory(CategoryRepository $categoryReppsitory, Request $request, CategoryResponse $response) {
+	public function createCategory( Request $request, CategoryResponse $response) {
 		$createCategoryRequest = new CreateCategoryRequest($request);
 		if ($createCategoryRequest->validation()) {
 			$response->message = ErrorCode::DATA_INVALID;
@@ -63,14 +70,14 @@ class CategoryController extends Controller {
 
 		$category = $createCategoryRequest->getData();
 
-		$result = $categoryReppsitory->createCategory($category);
+		$result = $this->categoryRepository->createCategory($category);
 		if ($result) {
 			$response->message = Lang::get('messages.create_category_success');
 			$response->data = $response->newCategoryWithModel($category);
 			return $response->responseData();
 		} else {
 			$response->message = ErrorCode::SAVE_DATA_FAIL;
-			$response->errorMessage = Lang::get('messages.create_category_fail');
+			$response->errorMessage = array(Lang::get('messages.create_category_fail'));
 			return $response->badRequest();
 		}
 
@@ -86,7 +93,7 @@ class CategoryController extends Controller {
 		    | description| String       |
 		    | parent_id  | integer
 	*/
-	public function updateCategory(Request $request, CategoryResponse $response, CategoryRepository $categoryReppsitory) {
+	public function updateCategory(Request $request, CategoryResponse $response) {
 		$updateCategoryRequest = new UpdateCategoryRequest($request);
 		if ($updateCategoryRequest->validation()) {
 			$response->message = ErrorCode::DATA_INVALID;
@@ -95,11 +102,11 @@ class CategoryController extends Controller {
 		}
 
 		$category = $updateCategoryRequest->getData();
-		$result = $categoryReppsitory->updateCategory($category);
+		$result = $this->categoryRepository->updateCategory($category);
 		$arrParrent = array($category->id);
 		// update level for all child category of category update
-		for ($i=1; $i <= 5 ; $i++) { 
-			$categories = $categoryReppsitory->getListCategoryByParentIds($arrParrent);
+		for ($i=1; $i <= $this->maxLevelMenu ; $i++) { 
+			$categories = $this->categoryRepository->getListCategoryByParentIds($arrParrent);
 			$arrParrent = array();
 			if($categories == null) {
 				break;
@@ -107,7 +114,7 @@ class CategoryController extends Controller {
 			foreach ($categories as $key => $value) {
 
 				$value->level = $value->level +  $updateCategoryRequest->levelRun;
-				$categoryReppsitory->updateLevelCategory($value->id,$value->level);
+				$this->categoryRepository->updateLevelCategory($value->id,$value->level);
 				$arrParrent[] = $value->id;
 			}
 		}
@@ -124,7 +131,7 @@ class CategoryController extends Controller {
 		    |--------------------------------------------------------------------------
 		    | id 		 | integer      | required
 	*/
-	public function deleteCategory(Request $request, CategoryResponse $response, CategoryRepository $categoryReppsitory) {
+	public function deleteCategory(Request $request, CategoryResponse $response) {
 		$deleteCategoryRequest = new DeleteCategoryRequest($request);
 		if ($deleteCategoryRequest->validation()) {
 			$response->message = ErrorCode::DATA_INVALID;
@@ -133,7 +140,17 @@ class CategoryController extends Controller {
 		}
 
 		$id = $deleteCategoryRequest->getData();
-		$result = $categoryReppsitory->deleteCategory($id);
+
+		$category = $this->categoryRepository->getCategoryByField(array('parent_id' => $id));
+
+		// can't delete category have child
+		if($category) {
+			$response->message = ErrorCode::DATA_INVALID;
+			$response->errorMessage = array(Lang::get('messages.category_have_child_can_not_delete'));
+			return $response->badRequest();
+		}
+
+		$result = $this->categoryRepository->deleteCategory($id);
 		$response->message = Lang::get('messages.delete_category_success');
 		$response->data = Lang::get('messages.delete_category_success');
 		return $response->responseData();

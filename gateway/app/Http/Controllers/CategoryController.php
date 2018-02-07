@@ -19,7 +19,7 @@ class CategoryController extends Controller {
     |--------------------------------------------------------------------------
     | Get list Category
     |--------------------------------------------------------------------------
-    |$array = json_decode(json_encode($booking), true);
+    | get category by default group item of user
 	*/
 	public function listCategory(Request $request) {
 		$result = ItemMicroservice::listCategory(['json' => array('ids' => $request->user()->groupItem)]);
@@ -75,7 +75,7 @@ class CategoryController extends Controller {
     | id 		 | integer      | required
 	*/
 	public function deleteCategory(Request $request) {
-
+		 
 		$result = ItemMicroservice::deleteCategory(['query' => $request->query()]);
 		if ($result && $result->getStatusCode() != 500) {
 			return response()->json($result->getBody(), $result->getStatusCode());
